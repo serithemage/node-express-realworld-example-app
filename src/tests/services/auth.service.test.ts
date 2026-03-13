@@ -1,6 +1,25 @@
+import { mockDeep, mockReset, DeepMockProxy } from 'jest-mock-extended';
+import { PrismaClient } from '@prisma/client';
+
+jest.mock('jsonwebtoken', () => ({
+  sign: jest.fn().mockReturnValue('mocked-jwt-token'),
+  verify: jest.fn().mockReturnValue({ user: { id: 123 } }),
+}));
+
+jest.mock('../../prisma/prisma-client', () => ({
+  __esModule: true,
+  default: mockDeep<PrismaClient>(),
+}));
+
 import * as bcrypt from 'bcryptjs';
 import { createUser, getCurrentUser, login, updateUser } from '../../app/routes/auth/auth.service';
-import prismaMock from '../prisma-mock';
+import prisma from '../../prisma/prisma-client';
+
+const prismaMock = prisma as unknown as DeepMockProxy<PrismaClient>;
+
+beforeEach(() => {
+  mockReset(prismaMock);
+});
 
 describe('AuthService', () => {
   describe('createUser', () => {
