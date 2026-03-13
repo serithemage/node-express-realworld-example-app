@@ -1,0 +1,4 @@
+echo "Running tests before push..."
+make test
+echo "Running build verification..."
+make build

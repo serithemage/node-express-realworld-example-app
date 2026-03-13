@@ -88,6 +88,13 @@ Each module follows the pattern:
 
 Tests use `jest-mock-extended` to mock the Prisma client (`src/tests/prisma-mock.ts`). Test files are at `src/tests/services/*.test.ts`. E2E tests are in `e2e/`.
 
+## Git Hooks
+
+husky + lint-staged로 코드 품질 자동 검증:
+
+- **pre-commit**: `lint-staged` (ESLint --fix + Prettier) + `tsc --noEmit` 타입 체크
+- **pre-push**: `make test` + `make build` (테스트 통과 & 빌드 성공 시에만 push 허용)
+
 ## Documentation
 
 프로젝트 문서는 OpenSpec으로 관리된다. `openspec/specs/`가 단일 문서 소스(single source of truth):
